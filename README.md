@@ -16,10 +16,10 @@ It is a smart contract project written in [Solidity](https://docs.soliditylang.o
  
 ## Installation
 
-- Install foundry-fund-me
+- Install Lottery-SmartContract-Foundry
 ```bash
-    git clone https://github.com/yug49/foundry-fund-me-f23
-    cd foundry-fund-me
+    git clone https://github.com/yug49/Lottery-SmartContract-Foundry
+    cd Lottery-SmartContract-Foundry
 ```
 
 - Make a .env file
@@ -29,7 +29,7 @@ It is a smart contract project written in [Solidity](https://docs.soliditylang.o
 
 - Open the .env file and fill in the details similar to:
 ```env
-    SEPOLIA_RPC_URL=<YOUR SEPOLIA RPC URL>]
+    SEPOLIA_RPC_URL=<YOUR SEPOLIA RPC URL>
     ETHERSCAN_API_KEY=<YOUR ETHERSCAN API KEY>
     SEPOLIA_PRIVATE_KEY=<YOUR PRIVATE KEY>
 ```
