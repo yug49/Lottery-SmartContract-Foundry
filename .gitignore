@@ -13,10 +13,6 @@ docs/
 # Dotenv file
 .env
 
-lib/forgse-std
-lib/foundry-devops
-lib/soulmate
-
 broadcast/
 
 coverage.txt

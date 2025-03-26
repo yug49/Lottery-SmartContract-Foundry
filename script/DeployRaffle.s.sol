@@ -7,7 +7,7 @@ import {HelperConfig} from "./HelperConfig.s.sol";
 import {CreateSubscription, FundSubscription, AddConsumer} from "./Interactions.s.sol";
 
 contract DeployRaffle is Script {
-    function run() external returns(Raffle) {
+    function run() external returns (Raffle) {
         (Raffle raffle,) = deployContract();
         return raffle;
     }
@@ -22,12 +22,13 @@ contract DeployRaffle is Script {
         if (config.subscriptionId == 0) {
             //create subscription
             CreateSubscription createSubscription = new CreateSubscription();
-            config.subscriptionId = createSubscription
-                .createSubscription(config.vrfCoordinator, config.deployerKey);
+            config.subscriptionId = createSubscription.createSubscription(config.vrfCoordinator, config.deployerKey);
 
             //fund subscription
             FundSubscription fundSubscription = new FundSubscription();
-            fundSubscription.fundSubscription(config.vrfCoordinator, config.subscriptionId, config.link, config.deployerKey);
+            fundSubscription.fundSubscription(
+                config.vrfCoordinator, config.subscriptionId, config.link, config.deployerKey
+            );
 
             helperConfig.setConfig(block.chainid, config);
         }

@@ -3,8 +3,7 @@ pragma solidity ^0.8.19;
 
 import {Script, console} from "../lib/forge-std/src/Script.sol";
 import {HelperConfig, CodeConstants} from "./HelperConfig.s.sol";
-import {VRFCoordinatorV2PlusMock} from
-    "../lib/chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2PlusMock.sol";
+import {VRFCoordinatorV2PlusMock} from "../lib/chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2PlusMock.sol";
 import {LinkToken} from "../test/mocks/LinkToken.sol";
 import {DevOpsTools} from "../lib/foundry-devops/src/DevOpsTools.sol";
 
@@ -96,7 +95,9 @@ contract AddConsumer is Script {
         addConsumer(mostRecentlyDeployed, vrfCoordinator, subId, deployerKey);
     }
 
-    function addConsumer(address contractToAddToVrf, address vrfCoordinator, uint256 subId, uint256 deployerKey) public {
+    function addConsumer(address contractToAddToVrf, address vrfCoordinator, uint256 subId, uint256 deployerKey)
+        public
+    {
         console.log("Adding consumer contract: ", contractToAddToVrf);
         console.log("To vrf coordinator: ", vrfCoordinator);
         console.log("On chainId: ", block.chainid);

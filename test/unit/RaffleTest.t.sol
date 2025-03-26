@@ -107,7 +107,7 @@ contract RaffleTest is CodeConstants, Test {
         vm.roll(block.number + 1);
 
         //Act
-        (bool upkeepNeeded, ) = raffle.checkUpkeep("");
+        (bool upkeepNeeded,) = raffle.checkUpkeep("");
 
         //assert
         assert(!upkeepNeeded);
@@ -122,7 +122,7 @@ contract RaffleTest is CodeConstants, Test {
         raffle.performUpkeep("");
 
         //Act
-        (bool upkeepNeeded, ) = raffle.checkUpkeep("");
+        (bool upkeepNeeded,) = raffle.checkUpkeep("");
 
         //assert
         assert(!upkeepNeeded);
@@ -136,7 +136,7 @@ contract RaffleTest is CodeConstants, Test {
         vm.roll(block.number + 1);
 
         //Act
-        (bool upkeepNeeded, ) = raffle.checkUpkeep("");
+        (bool upkeepNeeded,) = raffle.checkUpkeep("");
 
         //assert
         assert(!upkeepNeeded);
@@ -150,7 +150,7 @@ contract RaffleTest is CodeConstants, Test {
         vm.roll(block.number + 1);
 
         //Act
-        (bool upkeepNeeded, ) = raffle.checkUpkeep("");
+        (bool upkeepNeeded,) = raffle.checkUpkeep("");
 
         //assert
         assert(upkeepNeeded);
@@ -182,20 +182,12 @@ contract RaffleTest is CodeConstants, Test {
 
         // Act / assert
         vm.expectRevert(
-            abi.encodeWithSelector(
-                Raffle.Raffle__UpKeepNotNeeded.selector,
-                currentBalance,
-                numPlayers,
-                rState
-            )
+            abi.encodeWithSelector(Raffle.Raffle__UpKeepNotNeeded.selector, currentBalance, numPlayers, rState)
         );
         raffle.performUpkeep("");
     }
 
-    function testPerformUpkeepUpdatesRaffleStateEmitsRequestId()
-        public
-        raffleEntered
-    {
+    function testPerformUpkeepUpdatesRaffleStateEmitsRequestId() public raffleEntered {
         //Act
         vm.recordLogs();
         raffle.performUpkeep("");
@@ -214,32 +206,27 @@ contract RaffleTest is CodeConstants, Test {
         _;
     }
 
-    function testFullfillRamdomWordsCanOnlyBeCalledAfterPerformUpkeep(
-        uint256 randomRequestId
-    ) public raffleEntered skipFork {
-        //arrange / act/ assert
-        vm.expectRevert(/**VRFCoordinatorV2PlusMock.InvalidRandomWords.selector*/ );
-        VRFCoordinatorV2PlusMock(vrfCoordinator).fulfillRandomWords(
-            randomRequestId,
-            address(raffle)
-        );
-    }
-
-    function testFullfullRandomWordsPicksAWinnerAndSendsMoney()
+    function testFullfillRamdomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 randomRequestId)
         public
         raffleEntered
         skipFork
     {
+        //arrange / act/ assert
+        vm.expectRevert(
+            /**
+             * VRFCoordinatorV2PlusMock.InvalidRandomWords.selector
+             */
+        );
+        VRFCoordinatorV2PlusMock(vrfCoordinator).fulfillRandomWords(randomRequestId, address(raffle));
+    }
+
+    function testFullfullRandomWordsPicksAWinnerAndSendsMoney() public raffleEntered skipFork {
         //arrange
         uint256 additionalEntrants = 3; // 4 total
         uint256 startingIndex = 1;
         address expectedWinner = address(1);
 
-        for (
-            uint256 i = startingIndex;
-            i < startingIndex + additionalEntrants;
-            i++
-        ) {
+        for (uint256 i = startingIndex; i < startingIndex + additionalEntrants; i++) {
             address newPlayer = address(uint160(i)); //address(1), address(2) ...
             hoax(newPlayer, 100 ether);
             raffle.enterRaffle{value: entranceFee}();
@@ -253,10 +240,7 @@ contract RaffleTest is CodeConstants, Test {
         raffle.performUpkeep("");
         Vm.Log[] memory entries = vm.getRecordedLogs();
         bytes32 requestId = entries[1].topics[1];
-        VRFCoordinatorV2PlusMock(vrfCoordinator).fulfillRandomWords(
-            uint256(requestId),
-            address(raffle)
-        );
+        VRFCoordinatorV2PlusMock(vrfCoordinator).fulfillRandomWords(uint256(requestId), address(raffle));
 
         //assert
         address recentWinner = raffle.getRecentWinner();

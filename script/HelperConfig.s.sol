@@ -39,9 +39,7 @@ contract HelperConfig is Script, CodeConstants {
         networkConfigs[ETH_SEPOLIA_CHAIN_ID] = getSepoliaEthConfig();
     }
 
-    function getConfigByChainId(
-        uint256 chainId
-    ) public returns (NetworkConfig memory) {
+    function getConfigByChainId(uint256 chainId) public returns (NetworkConfig memory) {
         if (networkConfigs[chainId].vrfCoordinator != address(0)) {
             return networkConfigs[chainId];
         } else if (chainId == ANVIL_CHAIN_ID) {
@@ -55,27 +53,23 @@ contract HelperConfig is Script, CodeConstants {
         return getConfigByChainId(block.chainid);
     }
 
-    function setConfig(
-        uint256 chainId,
-        NetworkConfig memory networkConfig
-    ) public {
+    function setConfig(uint256 chainId, NetworkConfig memory networkConfig) public {
         networkConfigs[chainId] = networkConfig;
     }
 
     function getSepoliaEthConfig() public view returns (NetworkConfig memory) {
         console.log("getting sepolia config");
-        return
-            NetworkConfig({
-                entranceFee: 0.01 ether, //1e16
-                interval: 30, //30 seconds
-                vrfCoordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
-                gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
-                subscriptionId: 48583865387484932799297035509104624263192418567904438269948387568409171967818,
-                callBackGasLimit: 500000, //5e5
-                link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
-                // account: 0xD43f127F91a190CB956Ec25640081a80Df72b8dc,
-                deployerKey: vm.envUint("PRIVATE_KEY")
-            });
+        return NetworkConfig({
+            entranceFee: 0.01 ether, //1e16
+            interval: 30, //30 seconds
+            vrfCoordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
+            gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
+            subscriptionId: 48583865387484932799297035509104624263192418567904438269948387568409171967818,
+            callBackGasLimit: 500000, //5e5
+            link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
+            // account: 0xD43f127F91a190CB956Ec25640081a80Df72b8dc,
+            deployerKey: vm.envUint("PRIVATE_KEY")
+        });
     }
 
     function getAnvilEthConfig() public returns (NetworkConfig memory) {
@@ -86,10 +80,7 @@ contract HelperConfig is Script, CodeConstants {
 
         //Deploy mocks and such
         vm.startBroadcast();
-        VRFCoordinatorV2PlusMock vrfCoordinatorMock = new VRFCoordinatorV2PlusMock(
-            MOCK_BASE_FEES,
-            MOCK_GAS_PRICE
-        );
+        VRFCoordinatorV2PlusMock vrfCoordinatorMock = new VRFCoordinatorV2PlusMock(MOCK_BASE_FEES, MOCK_GAS_PRICE);
         LinkToken linkToken = new LinkToken();
         vm.stopBroadcast();
         console.log("getting anvil config");
